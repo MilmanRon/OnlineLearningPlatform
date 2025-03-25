@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand navbar-light bg-light shadow-sm">
+    <div class="container">
+        <!-- Logo -->
+            <i routerLink="" style="cursor: pointer;" class="bi bi-mortarboard-fill custom-icon"></i>
+
+        <div class="navbar-content d-flex flex-grow-1">
+            <!-- Links beside logo -->
+             @if (accountService.currentUser()) {
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold">Dashboard</a>
+                    </li>
+                </ul>
+             }
+        </div>
+
+        @if(accountService.currentUser()){
+            <div dropdown class="dropdown">
+                <a dropdownToggle class="dropdown-toggle text-dark text-decoration-none">
+                    Welcome {{accountService.currentUser()?.name | titlecase}}
+                </a>
+                <div *dropdownMenu class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                    <a class="dropdown-item">Edit profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" (click)="logout()">Logout</a>
+                </div>
+            </div>
+        }
+
+
+        @if (!accountService.currentUser()) {
+            <button routerLink="/login" type="button" class="btn nav-login">Log In</button>
+        }
+
+
+
+    </div>
+</nav>

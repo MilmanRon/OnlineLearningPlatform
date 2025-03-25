@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-container">
+                <h2 class="form-title">Log In</h2>
+                <form #loginForm="ngForm" (ngSubmit)="login()">
+                    <div class="mb-3">
+                        <label for="email" class="form-lable">Email</label>
+                        <input name="email" 
+                            [(ngModel)]="model.email" 
+                            type="email" 
+                            class="form-control" 
+                            id="email" 
+                            placeholder="Enter your email">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-lable">Password</label>
+                        <input type="password"
+                            name="password" 
+                            [(ngModel)]="model.password"
+                            class="form-control" 
+                            id="password" 
+                            placeholder="Enter your password">
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn">Log In</button>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <p>Don't have an account? <a routerLink="/register" style="color: #0dcaf0; text-decoration: underline;">Register</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

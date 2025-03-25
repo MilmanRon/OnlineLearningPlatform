@@ -1,0 +1,22 @@
+.custom-icon{
+    color: #3bdcfc;   
+    font-size: 40px;
+    margin-right: 20px;
+}
+
+.nav-link{
+    font-size: medium;
+}
+
+.nav-link:hover{
+    cursor: pointer;
+    color: black;
+}
+
+.dropdown-item, .dropdown{
+    cursor: pointer;
+}
+
+.dropdown-item:active{
+    background-color: #3bdcfc;
+}
