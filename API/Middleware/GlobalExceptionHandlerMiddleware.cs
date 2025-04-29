@@ -28,12 +28,8 @@ namespace API.Middleware
         {
             var statusCode = exception switch
             {
-                EntityNotFoundException => HttpStatusCode.NotFound,
-                EntityAlreadyExistsException => HttpStatusCode.BadRequest,
-                UserAlreadyExistsException => HttpStatusCode.BadRequest,
-                NoMatchingEmailException => HttpStatusCode.BadRequest,
-                PasswordDoesntMatchException => HttpStatusCode.BadRequest,
-                DuplicateNameException => HttpStatusCode.BadRequest,
+                KeyNotFoundException => HttpStatusCode.NotFound,
+                InvalidOperationException => HttpStatusCode.Conflict,
                 _ => HttpStatusCode.InternalServerError
             };
 
@@ -57,11 +53,8 @@ namespace API.Middleware
         {
             return exception switch
             {
-                EntityNotFoundException => "Resource Not Found",
-                EntityAlreadyExistsException => "Resource Already Exists",
-                UserAlreadyExistsException => "User Already Exists",
-                NoMatchingEmailException => "Email Not Found",
-                PasswordDoesntMatchException => "Validation Failed",
+                KeyNotFoundException => "Resource Not Found",
+                InvalidOperationException => "Resource Already Exists",
                 _ => "Application Error"
             };
         }

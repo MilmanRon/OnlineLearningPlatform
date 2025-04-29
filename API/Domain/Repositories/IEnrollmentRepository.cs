@@ -7,5 +7,7 @@ namespace API.Domain.Repositories
         Task<Enrollment> AddEnrollmentAsync(Enrollment enrollment);
 
         Task DeleteEnrollmentAsync(Guid id);
+
+        Task<bool> HasEnrollmentAsync(Guid courseId);
     }
 }

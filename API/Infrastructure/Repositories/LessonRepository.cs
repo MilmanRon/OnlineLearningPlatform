@@ -23,7 +23,7 @@ namespace API.Infrastructure.Repositories
             var lesson = await context.Lessons.FindAsync(id);
 
             if (lesson == null)
-                throw new EntityNotFoundException(nameof(Lesson), id);
+                throw new KeyNotFoundException($"Cannot delete lesson: Lesson with ID '{id}' was not found.");
 
             context.Lessons.Remove(lesson);
             await context.SaveChangesAsync();
@@ -36,7 +36,7 @@ namespace API.Infrastructure.Repositories
                 .SingleOrDefaultAsync(l => l.Id == id);
 
             if (lesson == null)
-                throw new EntityNotFoundException(nameof(Lesson), id);
+                throw new KeyNotFoundException($"Lesson with ID '{id}' was not found.");
 
             return lesson;
         }
@@ -49,7 +49,7 @@ namespace API.Infrastructure.Repositories
             var currentLesson = await context.Lessons.FindAsync(lesson.Id);
 
             if (currentLesson == null)
-                throw new EntityNotFoundException(nameof(User), lesson.Id);
+                throw new KeyNotFoundException($"Cannot update lesson: Lesson with ID '{lesson.Id}' was not found.");
 
             currentLesson.Title = lesson.Title;
             currentLesson.VideoUrl = lesson.VideoUrl;
@@ -59,12 +59,12 @@ namespace API.Infrastructure.Repositories
             return currentLesson;
         }
 
-        public async Task<bool> isExistsAsync(Guid id)
+        public async Task<bool> HasLessonAsync(Guid id)
         {
             return await context.Lessons.AnyAsync(l => l.Id == id);
         }
 
-        public async Task<bool> HasLessonNameAsync(string name)
+        public async Task<bool> IsTitleAlreadyExists(string name)
         {
             return await context.Lessons.AnyAsync(l => l.Title == name);
         }

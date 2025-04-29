@@ -48,10 +48,10 @@ namespace API.Application.Services
             if (loginUserDto == null)
                 throw new ArgumentNullException(nameof(loginUserDto));
 
-            var user = await userRepository.GetUserByEmail(loginUserDto.Email);
+            var user = await userRepository.GetUserByEmailAsync(loginUserDto.Email);
 
             if (user == null)
-                throw new NoMatchingEmailException(loginUserDto.Email);
+                throw new InvalidOperationException($"User with email '{loginUserDto.Email}' doesn't exists.");
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
 
@@ -59,8 +59,8 @@ namespace API.Application.Services
 
             for (int i = 0; i < computeHash.Length; i++)
             {
-                if (computeHash[i] != user.PasswordHash[i]) 
-                    throw new PasswordDoesntMatchException();
+                if (computeHash[i] != user.PasswordHash[i])
+                    throw new InvalidOperationException($"Invalid Password");
             }
 
             return new UserResponseDto

@@ -13,8 +13,8 @@ namespace API.Application.Services
             if (addCourseDto == null)
                 throw new ArgumentNullException();
 
-            if (await courseRepository.HasCourseNameAsync(addCourseDto.Title))
-                throw new DuplicateNameException(nameof(Course), addCourseDto.Title);
+            if (await courseRepository.IsTitleAlreadyExists(addCourseDto.Title))
+                throw new InvalidOperationException($"Course with title '{addCourseDto.Title}' already exists.");
 
             var courseDb = await courseRepository.AddCourseAsync(mapper.Map<Course>(addCourseDto));
 
@@ -50,13 +50,13 @@ namespace API.Application.Services
                 return mapper.Map<CourseResponseDto>(updatedCourse);
             }
 
-            if (!await courseRepository.HasCourseNameAsync(updateCourseDto.Title))
+            if (!await courseRepository.IsTitleAlreadyExists(updateCourseDto.Title))
             {
                 var courseUpdated = await courseRepository.UpdateCourseAsync(mapper.Map<Course>(updateCourseDto));
                 return mapper.Map<CourseResponseDto>(courseUpdated);
             }
 
-            throw new DuplicateNameException(nameof(Course), updateCourseDto.Title);
+            throw new InvalidOperationException($"Course with title '{updateCourseDto.Title}' already exists.");
         }
 
         public async Task DeleteCourseAsync(Guid id)

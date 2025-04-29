@@ -1,4 +1,5 @@
-﻿using API.Application.DTOs.Enrollment;
+﻿using API.Application.DTOs.Course;
+using API.Application.DTOs.Enrollment;
 using API.Application.Interfaces;
 using API.Domain.Entities;
 using API.Domain.Repositories;
@@ -12,6 +13,9 @@ namespace API.Application.Services
         {
             if (addEnrollmentDto == null)
                 throw new ArgumentNullException();
+
+            if(await enrollmentRepository.HasEnrollmentAsync(addEnrollmentDto.CourseId))
+                throw new InvalidOperationException($"Enrollment already exists.");
 
             var enrollmentDb = await enrollmentRepository.AddEnrollmentAsync(mapper.Map<Enrollment>(addEnrollmentDto));
 

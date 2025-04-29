@@ -9,5 +9,7 @@ namespace API.Domain.Repositories
         Task<Progress> GetProgressByIdAsync(Guid id);
 
         Task DeleteProgressAsync(Guid id);
+
+        Task<bool> HasProgressAsync(Guid lessonId);
     }
 }

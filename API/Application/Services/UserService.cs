@@ -1,4 +1,5 @@
-﻿using API.Application.DTOs.Enrollment;
+﻿using API.Application.DTOs.Course;
+using API.Application.DTOs.Enrollment;
 using API.Application.DTOs.Progress;
 using API.Application.DTOs.User;
 using API.Application.Interfaces;
@@ -38,7 +39,7 @@ namespace API.Application.Services
                 return mapper.Map<UserResponseDto>(updatedUser);
             }
 
-            throw new DuplicateNameException(nameof(User), updatedUserDto.Name);
+            throw new InvalidOperationException($"User with email '{updatedUserDto.Email}' already exists.");
         }
 
 
@@ -49,7 +50,7 @@ namespace API.Application.Services
 
         public async Task<List<EnrollmentResponseDto>> GetUserEnrollments(Guid id)
         {
-            var userEnrollments = await userRepository.GetUserEnrollments(id);
+            var userEnrollments = await userRepository.GetUserEnrollmentsAsync(id);
 
             return userEnrollments.Select(e => mapper.Map<EnrollmentResponseDto>(e)).ToList();
 
@@ -57,7 +58,7 @@ namespace API.Application.Services
 
         public async Task<List<ProgressResponseDto>> GetUserProgress(Guid id)
         {
-            var userProgress = await userRepository.GetUserProgress(id);
+            var userProgress = await userRepository.GetUserProgressAsync(id);
 
             return userProgress.Select(p => mapper.Map<ProgressResponseDto>(p)).ToList();
 
@@ -65,15 +66,15 @@ namespace API.Application.Services
 
         public async Task<EnrollmentResponseDto> EnrollUser(AddEnrollmentDto addEnrollmentDto, Guid id)
         {
-            if (!await courseRepository.isExistsAsync(addEnrollmentDto.CourseId))
-                throw new KeyNotFoundException($"{nameof(Course)} with id {id} was not found.");
+            if (!await courseRepository.HasCourseAsync(addEnrollmentDto.CourseId))
+                throw new KeyNotFoundException($"Course with ID '{id}' was not found.");
 
-            if (await userRepository.isAlreadyEnrolled(addEnrollmentDto.CourseId, id))
-                throw new InvalidOperationException($"{nameof(User)} with id {id} is already enrolled to {nameof(Course)} with id {addEnrollmentDto.CourseId}");
+            if (await userRepository.isAlreadyEnrolledAsync(addEnrollmentDto.CourseId, id))
+                throw new InvalidOperationException($"User already enrolled to course: {addEnrollmentDto.CourseId}");
 
             addEnrollmentDto.UserId = id;
 
-            var enrollmentDb = await userRepository.EnrollUser(mapper.Map<Enrollment>(addEnrollmentDto), id);
+            var enrollmentDb = await userRepository.EnrollUserAsync(mapper.Map<Enrollment>(addEnrollmentDto), id);
 
             return mapper.Map<EnrollmentResponseDto>(enrollmentDb);
 
@@ -82,14 +83,14 @@ namespace API.Application.Services
         public async Task<ProgressResponseDto> AddProgress(AddProgressDto addProgressDto, Guid id)
         {
             if(!await userRepository.isExistsAsync(id))
-                throw new KeyNotFoundException($"{nameof(Lesson)} with id {id} was not found.");
+                throw new KeyNotFoundException($"User with ID '{id}' was not found.");
 
-            if(await userRepository.hasProgress(addProgressDto.LessonId, id))
-                throw new InvalidOperationException($"{nameof(User)} with id {id} is already finished {nameof(Lesson)} with id {addProgressDto.LessonId}");
+            if (await userRepository.hasProgressAsync(addProgressDto.LessonId, id))
+                throw new InvalidOperationException($"User already has progress in lesson: {addProgressDto.LessonId}");
 
             addProgressDto.UserId = id;
 
-            var progressDb = await userRepository.AddProgress(mapper.Map<Progress>(addProgressDto), id);
+            var progressDb = await userRepository.AddProgressAsync(mapper.Map<Progress>(addProgressDto), id);
 
             return mapper.Map<ProgressResponseDto>(progressDb);
         }

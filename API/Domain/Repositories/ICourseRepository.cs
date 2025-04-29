@@ -14,8 +14,8 @@ namespace API.Domain.Repositories
 
         Task DeleteCourseAsync(Guid id);
 
-        Task<bool> isExistsAsync(Guid id);
+        Task<bool> HasCourseAsync(Guid id);
 
-        Task<bool> HasCourseNameAsync(string name);
+        Task<bool> IsTitleAlreadyExists(string name);
     }
 }

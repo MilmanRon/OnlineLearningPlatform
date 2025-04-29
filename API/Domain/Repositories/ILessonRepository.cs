@@ -12,8 +12,8 @@ namespace API.Domain.Repositories
 
         Task DeleteLessonAsync(Guid id);
 
-        Task<bool> HasLessonNameAsync(string name);
+        Task<bool> IsTitleAlreadyExists(string name);
 
-        Task<bool> isExistsAsync(Guid lessonId);
+        Task<bool> HasLessonAsync(Guid lessonId);
     }
 }

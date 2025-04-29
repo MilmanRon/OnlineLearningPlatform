@@ -1,7 +1,9 @@
-﻿using API.Application.DTOs.Lesson;
+﻿using API.Application.DTOs.Course;
+using API.Application.DTOs.Lesson;
 using API.Application.Interfaces;
 using API.Domain.Entities;
 using API.Domain.Repositories;
+using API.Infrastructure.Repositories;
 using AutoMapper;
 
 namespace API.Application.Services
@@ -12,6 +14,9 @@ namespace API.Application.Services
         {
             if (addLessonDto == null)
                 throw new ArgumentNullException();
+
+            if(await lessonRepository.IsTitleAlreadyExists(addLessonDto.Title))
+                throw new InvalidOperationException($"Lesson with title '{addLessonDto.Title}' already exists.");
 
             var lessonDb = await lessonRepository.AddLessonAsync(mapper.Map<Lesson>(addLessonDto));
 
@@ -30,9 +35,21 @@ namespace API.Application.Services
             if (updateLessonDto == null)
                 throw new ArgumentNullException();
 
-            var lessonDb = await lessonRepository.UpdateLessonAsync(mapper.Map<Lesson>(updateLessonDto));
+            var lessonToUpdate = await lessonRepository.GetLessonByIdAsync(updateLessonDto.Id);
 
-            return mapper.Map<LessonResponseDto>(lessonDb);
+            if(lessonToUpdate.Title == updateLessonDto.Title)
+            {
+                var updatedLesson = await lessonRepository.UpdateLessonAsync(mapper.Map<Lesson>(updateLessonDto));
+                return mapper.Map<LessonResponseDto>(updatedLesson);
+            }
+
+            if(!await lessonRepository.IsTitleAlreadyExists(updateLessonDto.Title))
+            {
+                var updatedLesson = await lessonRepository.UpdateLessonAsync(mapper.Map<Lesson>(updateLessonDto));
+                return mapper.Map<LessonResponseDto>(updatedLesson);
+            }
+
+            throw new InvalidOperationException($"Lesson with title '{updateLessonDto.Title}' already exists.");
         }
 
         public async Task DeleteLessonAsync(Guid id)

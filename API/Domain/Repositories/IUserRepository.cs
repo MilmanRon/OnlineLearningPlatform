@@ -12,23 +12,23 @@ namespace API.Domain.Repositories
 
         Task DeleteUserAsync(Guid id);
 
-        Task<User?> GetUserByEmail(string email);
+        Task<User?> GetUserByEmailAsync(string email);
 
-        Task<List<Enrollment>> GetUserEnrollments(Guid id);
+        Task<List<Enrollment>> GetUserEnrollmentsAsync(Guid id);
 
-        Task<Enrollment> EnrollUser(Enrollment enrollment, Guid id);
+        Task<Enrollment> EnrollUserAsync(Enrollment enrollment, Guid id);
 
-        Task<List<Progress>> GetUserProgress(Guid id);
+        Task<List<Progress>> GetUserProgressAsync(Guid id);
 
-        Task<Progress> AddProgress(Progress progress, Guid id);
+        Task<Progress> AddProgressAsync(Progress progress, Guid id);
 
 
         Task<bool> HasUserWithEmailAsync(string email);
 
-        Task<bool> isAlreadyEnrolled(Guid courseId, Guid id);
+        Task<bool> isAlreadyEnrolledAsync(Guid courseId, Guid id);
 
         Task<bool> isExistsAsync(Guid id);
 
-        Task<bool> hasProgress(Guid lessonId, Guid id);
+        Task<bool> hasProgressAsync(Guid lessonId, Guid id);
     }                        
 }

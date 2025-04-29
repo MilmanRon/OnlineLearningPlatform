@@ -1,4 +1,5 @@
-﻿using API.Application.DTOs.Progress;
+﻿using API.Application.DTOs.Course;
+using API.Application.DTOs.Progress;
 using API.Application.Interfaces;
 using API.Domain.Entities;
 using API.Domain.Repositories;
@@ -12,6 +13,9 @@ namespace API.Application.Services
         {
             if (addProgressDto == null)
                 throw new ArgumentNullException();
+
+            if (await progressRepository.HasProgressAsync(addProgressDto.LessonId))
+                throw new InvalidOperationException($"Progress already exists.");
 
             var progressDb = await progressRepository.AddProgressAsync(mapper.Map<Progress>(addProgressDto));
 

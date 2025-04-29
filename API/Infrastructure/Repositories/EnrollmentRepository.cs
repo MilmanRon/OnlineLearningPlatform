@@ -23,15 +23,15 @@ namespace API.Infrastructure.Repositories
             var enrollment = await context.Enrollments.FindAsync(id);
 
             if (enrollment == null)
-                throw new EntityNotFoundException(nameof(Enrollment), id);
+                throw new KeyNotFoundException($"Cannot delete enrollment: Enrollment with ID '{id}' was not found.");
 
             context.Enrollments.Remove(enrollment);
             await context.SaveChangesAsync();
         }
 
-        public async Task<bool> Exists(Guid id)
+        public async Task<bool> HasEnrollmentAsync(Guid courseId)
         {
-            return await context.Enrollments.AnyAsync(e => e.Id == id);
+            return await context.Enrollments.AnyAsync(e => e.CourseId == courseId);
         }
     }
 }

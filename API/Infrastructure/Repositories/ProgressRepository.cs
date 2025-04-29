@@ -23,7 +23,7 @@ namespace API.Infrastructure.Repositories
             var progress = await context.Progress.FindAsync(id);
 
             if (progress == null)
-                throw new EntityNotFoundException(nameof(Progress), id);
+                throw new KeyNotFoundException($"Progress with ID '{id}' was not found.");
 
             context.Progress.Remove(progress);
             await context.SaveChangesAsync();
@@ -34,15 +34,15 @@ namespace API.Infrastructure.Repositories
             var progress = await context.Progress.FindAsync(id);
 
             if(progress == null)
-                throw new EntityNotFoundException(nameof(Progress), id);
+                throw new KeyNotFoundException($"Progress with ID '{id}' was not found.");
 
             return progress;
 
         }
 
-        public async Task<bool> Exists(Guid id)
+        public async Task<bool> HasProgressAsync(Guid lessonId)
         {
-            return await context.Progress.AnyAsync(p => p.Id == id);
+            return await context.Progress.AnyAsync(p => p.LessonId == lessonId);
         }
     }
 }
