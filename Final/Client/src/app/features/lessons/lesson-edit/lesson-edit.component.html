@@ -6,7 +6,7 @@
     >
       <div class="container mb-4">
         <p>Editing:</p>
-        <h1 class="fw-bold text-secondary-emphasis">{{lesson()?.title}}</h1>
+        <h1 class="fw-bold text-secondary-emphasis">{{ lesson()?.title }}</h1>
       </div>
       <hr class="mb-4" />
       <label for="title" class="form-label">Title</label>
@@ -44,6 +44,8 @@
         <ul class="m-0 bg-danger-subtle rounded">
           @if (videoUrl?.getError('required')) {
           <li class="p-1">Video URL is required.</li>
+          } @if (videoUrl?.getError('requireVideoUrlFormat')) {
+          <li class="p-1">Please enter a valid YouTube URL</li>
           }
         </ul>
         }
@@ -51,7 +53,7 @@
 
       <div class="text-center">
         <button class="btn btn-info text-white" [disabled]="isProcessing()">
-            Submit Edit
+          Submit Edit
         </button>
       </div>
     </form>

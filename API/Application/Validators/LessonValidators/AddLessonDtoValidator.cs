@@ -16,7 +16,7 @@ namespace API.Application.Validators.LessonValidators
 
             RuleFor(x => x.VideoUrl)
                 .NotEmpty().WithMessage("'VideoUrl' is required.")
-                .Matches("^(?:https?:\\/\\/)?(?:www\\.)?(?:youtube\\.com\\/(?:watch\\?v=|embed\\/)|youtu\\.be\\/)([\\w-]+)$")
+                .Matches("^(https?:\\/\\/)?(www\\.)?(youtube\\.com\\/embed\\/|youtu\\.be\\/)[a-zA-Z0-9_-]{11}(?:\\?.*)?$")
                 .WithMessage("Invalid YouTube URL format.");
 
         }

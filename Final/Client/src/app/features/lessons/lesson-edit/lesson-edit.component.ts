@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '../../shared/services/notification.service';
 import { Lesson } from '../../../core/domain/Models/lesson.model';
 import { ApiErrorService } from '../../shared/services/api-error.service';
+import { CustomValidators } from '../../shared/utils/custom-validators';
 
 @Component({
   selector: 'app-lesson-edit',
@@ -45,7 +46,7 @@ export class LessonEditComponent {
       Validators.minLength(1),
       Validators.maxLength(30),
     ]),
-    videoUrl: new FormControl(this.lesson()?.videoUrl, [Validators.required]),
+    videoUrl: new FormControl(this.lesson()?.videoUrl, [Validators.required, CustomValidators.requireVideoUrlFormat()]),
   });
 
   get title() {

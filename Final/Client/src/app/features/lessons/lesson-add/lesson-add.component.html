@@ -44,6 +44,8 @@
         <ul class="m-0 bg-danger-subtle rounded">
           @if (videoUrl?.getError('required')) {
           <li class="p-1">Video URL is required.</li>
+          }@if (videoUrl?.getError('requireVideoUrlFormat')) {
+          <li class="p-1">Please enter a valid YouTube URL</li>
           }
         </ul>
         }

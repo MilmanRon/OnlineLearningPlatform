@@ -14,6 +14,7 @@ import { CourseStore } from '../../../data/store/course.store';
 import { ActivatedRoute } from '@angular/router';
 import { Course } from '../../../core/domain/Models/course.model';
 import { ApiErrorService } from '../../shared/services/api-error.service';
+import { CustomValidators } from '../../shared/utils/custom-validators';
 
 @Component({
   selector: 'app-lesson-add',
@@ -25,7 +26,7 @@ export class LessonAddComponent {
   formUtils = inject(FormUtilsService);
   apiLessonRepository = inject(ApiLessonRepository);
   notificationService = inject(NotificationService);
-  apiErrorService = inject(ApiErrorService)
+  apiErrorService = inject(ApiErrorService);
   isProcessing = signal<boolean>(false);
 
   courseStore = inject(CourseStore);
@@ -41,7 +42,10 @@ export class LessonAddComponent {
       Validators.minLength(1),
       Validators.maxLength(30),
     ]),
-    videoUrl: new FormControl('', [Validators.required]),
+    videoUrl: new FormControl('', [
+      Validators.required,
+      CustomValidators.requireVideoUrlFormat(),
+    ]),
   });
 
   get title() {
@@ -55,6 +59,8 @@ export class LessonAddComponent {
   onSubmit() {
     if (this.addLessonForm.invalid) {
       this.addLessonForm.markAllAsTouched();
+      console.log(this.videoUrl?.errors);
+      
       return;
     }
 
@@ -63,7 +69,7 @@ export class LessonAddComponent {
       courseId: this.course()?.id ?? '',
     } as Omit<Lesson, 'id' | 'isCompleted'>;
 
-    this.addNewLesson(newLesson);    
+    this.addNewLesson(newLesson);
   }
 
   addNewLesson(newLesson: Omit<Lesson, 'id' | 'isCompleted'>) {
