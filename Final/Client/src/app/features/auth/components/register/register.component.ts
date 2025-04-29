@@ -14,6 +14,7 @@ import { ApiErrorService } from '../../../shared/services/api-error.service';
 import { UserStore } from '../../../../data/store/user.store';
 import { Router, RouterLink } from '@angular/router';
 import { FormUtilsService } from '../../../shared/utils/form-utils.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -27,6 +28,7 @@ export class RegisterComponent {
   router = inject(Router);
   formUtils = inject(FormUtilsService);
   apiErrorService = inject(ApiErrorService);
+  notificationService = inject(NotificationService);
   Role = Role;
 
   isProcessing = signal<boolean>(false);
@@ -76,11 +78,12 @@ export class RegisterComponent {
           this.isProcessing.set(false);
           this.router.navigateByUrl('/');
         },
-        error: (err) => {
-          console.log(err);
-          this.isProcessing.set(false);
-          this.apiErrorService.notifyError(err);
-        },
+        error: (error) => {
+            this.notificationService.notifyError(
+              this.apiErrorService.getErrorDetails(error)
+            );
+            this.isProcessing.set(false);
+          },
       });
   }
 }

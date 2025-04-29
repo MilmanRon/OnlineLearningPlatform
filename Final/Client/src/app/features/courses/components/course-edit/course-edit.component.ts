@@ -12,6 +12,7 @@ import { NgClass } from '@angular/common';
 import { FormUtilsService } from '../../../shared/utils/form-utils.service';
 import { ApiCourseRepository } from '../../../../data/repositories/api-course.repository';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { ApiErrorService } from '../../../shared/services/api-error.service';
 
 @Component({
   selector: 'app-course-edit',
@@ -24,6 +25,7 @@ export class CourseEditComponent {
   courseStore = inject(CourseStore);
   apiCourseRepository = inject(ApiCourseRepository);
   notificationService = inject(NotificationService);
+  apiErrorService = inject(ApiErrorService);
   route = inject(ActivatedRoute);
 
   courseId = this.route.snapshot.paramMap.get('courseId');
@@ -76,11 +78,11 @@ export class CourseEditComponent {
           this.course.set(this.courseStore.getCourseById(this.courseId ?? ''));
         },
         error: (error) => {
-          this.notificationService.notifyError(
-            'Error updating course, please try again.'
-          );
-          this.isProcessing.set(false);
-        },
+            this.notificationService.notifyError(
+              this.apiErrorService.getErrorDetails(error)
+            );
+            this.isProcessing.set(false);
+          },
       });
   }
 }

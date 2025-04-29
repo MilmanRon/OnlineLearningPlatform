@@ -12,6 +12,7 @@ import { ApiLessonRepository } from '../../../data/repositories/api-lesson.repos
 import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '../../shared/services/notification.service';
 import { Lesson } from '../../../core/domain/Models/lesson.model';
+import { ApiErrorService } from '../../shared/services/api-error.service';
 
 @Component({
   selector: 'app-lesson-edit',
@@ -24,6 +25,7 @@ export class LessonEditComponent {
   courseStore = inject(CourseStore);
   apiLessonRepository = inject(ApiLessonRepository);
   notificationService = inject(NotificationService);
+  apiErrorService = inject(ApiErrorService);
   route = inject(ActivatedRoute);
 
   courseId = this.route.snapshot.paramMap.get('courseId') ?? '';
@@ -77,7 +79,7 @@ export class LessonEditComponent {
       },
       error: (error) => {
         this.notificationService.notifyError(
-          'Error updating lesson, please try again.'
+          this.apiErrorService.getErrorDetails(error)
         );
         this.isProcessing.set(false);
       },

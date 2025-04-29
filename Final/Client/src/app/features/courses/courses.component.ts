@@ -5,6 +5,7 @@ import { SuccessAlertComponent } from '../shared/components/alerts/success-alert
 import { NotificationService } from '../shared/services/notification.service';
 import { single } from 'rxjs';
 import { ErrorAlertComponent } from '../shared/components/alerts/error-alert/error-alert.component';
+import { ApiErrorService } from '../shared/services/api-error.service';
 
 @Component({
   selector: 'app-courses',
@@ -23,12 +24,12 @@ export class CoursesComponent implements OnInit {
   hasError = signal<boolean>(false);
 
   ngOnInit(): void {
-    this.notificationService.success$.subscribe((success) => {
-      this.showSuccessAlert(success);
+    this.notificationService.success$.subscribe((successMessage) => {
+      this.showSuccessAlert(successMessage);
     });
 
-    this.notificationService.error$.subscribe((error) => {
-        this.showErrorAlert(error);
+    this.notificationService.error$.subscribe((errorMessage) => {
+        this.showErrorAlert(errorMessage);
     })
   }
 

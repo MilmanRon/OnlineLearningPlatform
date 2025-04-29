@@ -12,6 +12,7 @@ import { ApiUserRepository } from '../../../data/repositories/api-user.repositor
 import { NotificationService } from '../../shared/services/notification.service';
 import { Role, User } from '../../../core/domain/Models/user.model';
 import { ModalService } from '../../shared/services/modal.service';
+import { ApiErrorService } from '../../shared/services/api-error.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -25,6 +26,7 @@ export class UserEditComponent {
   userStore = inject(UserStore);
   apiUserRepository = inject(ApiUserRepository);
   notificationService = inject(NotificationService);
+  apiErrorService = inject(ApiErrorService);  
 
   isProcessing = signal<boolean>(false);
 
@@ -71,11 +73,11 @@ export class UserEditComponent {
           this.isProcessing.set(false);
         },
         error: (error) => {
-          this.notificationService.notifyError(
-            'Error updating user, please try again.'
-          );
-          this.isProcessing.set(false);
-        },
+            this.notificationService.notifyError(
+              this.apiErrorService.getErrorDetails(error)
+            );
+            this.isProcessing.set(false);
+          },
       });
   }
 
@@ -111,9 +113,9 @@ export class UserEditComponent {
       next: () => {
         this.isProcessing.set(false);
       },
-      error: () => {
+      error: (error) => {
         this.notificationService.notifyError(
-          'Unable to delete profile, please try again.'
+          this.apiErrorService.getErrorDetails(error)
         );
         this.isProcessing.set(false);
       },

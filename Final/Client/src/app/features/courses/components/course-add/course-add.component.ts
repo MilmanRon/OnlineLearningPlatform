@@ -10,6 +10,7 @@ import { FormUtilsService } from '../../../shared/utils/form-utils.service';
 import { ApiCourseRepository } from '../../../../data/repositories/api-course.repository';
 import { Course } from '../../../../core/domain/Models/course.model';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { ApiErrorService } from '../../../shared/services/api-error.service';
 
 @Component({
   selector: 'app-course-add',
@@ -21,6 +22,7 @@ export class CourseAddComponent {
   formUtils = inject(FormUtilsService);
   apiCourseRepository = inject(ApiCourseRepository);
   notificationService = inject(NotificationService);
+  apiErrorService = inject(ApiErrorService);
   isProcessing = signal<boolean>(false);
 
   addCourseForm = new FormGroup({
@@ -70,7 +72,7 @@ export class CourseAddComponent {
 
       error: (error) => {
         this.notificationService.notifyError(
-          'Error adding course, please try again.'
+          this.apiErrorService.getErrorDetails(error)
         );
         this.isProcessing.set(false);
       },

@@ -13,6 +13,7 @@ import { Lesson } from '../../../core/domain/Models/lesson.model';
 import { CourseStore } from '../../../data/store/course.store';
 import { ActivatedRoute } from '@angular/router';
 import { Course } from '../../../core/domain/Models/course.model';
+import { ApiErrorService } from '../../shared/services/api-error.service';
 
 @Component({
   selector: 'app-lesson-add',
@@ -24,6 +25,7 @@ export class LessonAddComponent {
   formUtils = inject(FormUtilsService);
   apiLessonRepository = inject(ApiLessonRepository);
   notificationService = inject(NotificationService);
+  apiErrorService = inject(ApiErrorService)
   isProcessing = signal<boolean>(false);
 
   courseStore = inject(CourseStore);
@@ -76,7 +78,7 @@ export class LessonAddComponent {
 
       error: (error) => {
         this.notificationService.notifyError(
-          'Error adding lesson, please try again.'
+          this.apiErrorService.getErrorDetails(error)
         );
         this.isProcessing.set(false);
       },

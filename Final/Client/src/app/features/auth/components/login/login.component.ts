@@ -12,6 +12,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthCredentials } from '../../../../core/domain/Models/auth/auth-credentials.model';
 import { FormUtilsService } from '../../../shared/utils/form-utils.service';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { ApiErrorService } from '../../../shared/services/api-error.service';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,7 @@ export class LoginComponent {
   router = inject(Router);
   formUtils = inject(FormUtilsService);
   notificationService = inject(NotificationService);
+  apiErrorService = inject(ApiErrorService);
 
   isProcessing = signal<boolean>(false);
 
@@ -62,10 +64,11 @@ export class LoginComponent {
         this.isProcessing.set(false);
         this.router.navigateByUrl('/');
       },
-      error: (err) => {
-        console.log(err);
+      error: (error) => {
+        this.notificationService.notifyError(
+          this.apiErrorService.getErrorDetails(error)
+        );
         this.isProcessing.set(false);
-        this.notificationService.notifyError('An error occured, please try again.')
       },
     });
  }
