@@ -1,0 +1,111 @@
+<div class="container bg-light shadow-sm p-3 rounded">
+  <form [formGroup]="registrationForm" (ngSubmit)="isProcessing() ? '' : onSubmit()">
+    <div class="container mb-4 text-center">
+      <h1 class="fw-bold text-secondary-emphasis">Register</h1>
+    </div>
+    <hr class="mb-4" />
+    <label for="name" class="form-label">Name</label>
+    <input
+      id="name"
+      class="form-control"
+      type="text"
+      formControlName="name"
+      [ngClass]="formUtils.getValidationClass(name)"
+    />
+    
+    <div class="text-danger mb-4 mt-2 p-1">
+      @if (name?.invalid && (name?.touched || name?.dirty)) {
+      <ul class="m-0 bg-danger-subtle rounded">
+        @if (name?.getError('required')) {
+        <li class="p-1">Name field is required.</li>
+        } @if (name?.getError('minlength')) {
+        <li class="p-1">Name can't be less than 2 characters.</li>
+        }
+      </ul>
+      }
+    </div>
+
+    <label for="email" class="form-label">Email</label>
+    <input
+      id="email"
+      class="form-control"
+      type="email"
+      formControlName="email"
+      [ngClass]="formUtils.getValidationClass(email)"
+    />
+
+    <div class="text-danger mb-4 mt-2 p-1">
+      @if (email?.invalid && (email?.touched || email?.dirty)) {
+      <ul class="m-0 bg-danger-subtle rounded">
+        @if (email?.getError('required')) {
+        <li class="p-1">Email field is required.</li>
+        } @if (email?.getError('email')) {
+        <li class="p-1">Please enter a valid email address.</li>
+        }
+      </ul>
+      }
+    </div>
+
+    <label for="password" class="form-label">Password</label>
+    <input
+      id="password"
+      class="form-control"
+      type="password"
+      formControlName="password"
+      [ngClass]="formUtils.getValidationClass(password)"
+    />
+
+    <div class="text-danger mb-4 mt-2 p-1">
+      @if (password?.invalid && (password?.touched || password?.dirty)) {
+      <ul class="m-0 bg-danger-subtle rounded">
+        @if (password?.getError('required')) {
+        <li class="p-1">Password field is required.</li>
+        } @if (password?.getError('minlength')) {
+        <li class="p-1">Password can't be less than 8 characters.</li>
+        } @if (password?.getError('requireUppercase')) {
+        <li class="p-1">
+          Password must contain at least one uppercase letter.
+        </li>
+        } @if (password?.getError('requireDigit')) {
+        <li class="p-1">Password must contain at least one number.</li>
+        } @if (password?.getError('requireSpecialChar')) {
+        <li class="p-1">
+          Password must contain at least one special character.
+        </li>
+        }
+      </ul>
+      }
+    </div>
+
+    <div class="form-check">
+      <input
+        type="radio"
+        class="form-check-input"
+        [value]="Role.Student"
+        formControlName="role"
+        id="student"
+      />
+      <label class="form-check-label" for="student">Student</label>
+    </div>
+    <div class="form-check">
+      <input
+        type="radio"
+        class="form-check-input"
+        [value]="Role.Instructor"
+        formControlName="role"
+        id="instructor"
+      />
+      <label class="form-check-label" for="instructor">Instructor</label>
+    </div>
+
+    <div class="container text-center my-3">
+        <button class="btn btn-info shadow-sm text-white">Register</button>
+    </div>
+    <div class="text-center">
+        Already have an account ? <a routerLink="/auth/login">login</a>
+    </div>
+  </form>
+</div>
+
+
+

@@ -1,0 +1,7 @@
+<div class="mx-5">
+    <router-outlet></router-outlet>
+</div>
+
+@if (hasError()) {
+    <app-error-alert [message]="errorMessage()"></app-error-alert>
+}

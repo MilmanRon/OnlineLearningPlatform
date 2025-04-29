@@ -1,0 +1,11 @@
+<div class="container justify-content-center" [ngClass]="!isVisible() ? 'visually-hidden' : ''">
+    <div class="row">
+      <div class="col">
+        <div class="alert alert-danger mt-4 d-flex">
+          <div>{{ message() }}</div>
+          <button class="btn-close ms-auto" (click)="closeAlert()"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

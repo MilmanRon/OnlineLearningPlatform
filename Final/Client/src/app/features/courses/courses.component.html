@@ -1,0 +1,20 @@
+<div class="row mb-4">
+  <div class="col-1 align-self-center text-center">
+    <img
+      src="arrow-left.svg"
+      (click)="goToPreviousPage()"
+      class="arrow-left ms-1 p-1 align"
+    />
+  </div>
+  <div class="col-10 d-flex justify-content-center" style="height: 80px;">
+    <div class="col-5">
+      @if (isSuccessful()) {
+      <app-success-alert [message]="successMessage()"></app-success-alert>
+      }
+      @if(hasError()){
+        <app-error-alert [message]="errorMessage()"></app-error-alert>
+      }
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

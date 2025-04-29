@@ -1,0 +1,28 @@
+<div class="container">
+  <p class="m-0">Course:</p>
+  <h1>{{ course()?.title }}</h1>
+  <div class="d-flex mb-4">
+    <h3 class="mb-3">{{ course()?.description }}</h3>
+    @if (userStore.user()?.role === Role.Instructor) {
+            <button class="btn btn-info text-white ms-auto" routerLink="add-lesson">
+              <div class="d-flex">
+                <div>Add Lesson</div>
+                <img src="plus-square-fill.svg" class="ms-2" />
+              </div>
+            </button>
+    }
+  </div>
+
+  @if (userStore.user()?.role === Role.Student) {
+  <div class="fw-light mb-1">Course Progress:</div>
+  <div class="progress" role="progressbar">
+    <div
+      class="progress-bar progress-bar-striped bg-info"
+      [style]="'width: ' + courseProgressPercentage() + '%;'"
+    ></div>
+  </div>
+  }
+
+  <hr class="my-4" />
+  <app-lesson-list [lessons]="course()?.lessons"></app-lesson-list>
+</div>

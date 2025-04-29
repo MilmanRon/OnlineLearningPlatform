@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-body d-flex">
+    <div>
+      <div class="lead fw-normal">
+        {{ lesson().title }}
+      </div>
+
+      @if(userStore.user()?.role === Role.Student){
+      <div class="fs-6 lead">
+        Status:
+        <span
+          [ngClass]="lesson().isCompleted ? 'text-success' : 'text-warning'"
+          >{{ lesson().isCompleted ? "Completed" : "In Progress" }}</span
+        >
+      </div>
+      }
+    </div>
+    <div class="ms-auto align-self-center">
+      <div class="d-flex">
+        @if(userStore.user()?.role === Role.Instructor){
+
+        <button class="btn btn-danger p-0 ms-auto d-flex" (click)="deleteLesson()" [disabled]="isProcessing()">
+          <img src="trash-fill.svg" width="20px" class="m-2" />
+        </button>
+        <button
+          class="btn btn-secondary text-white p-0 opacity-50 ms-2"
+          [routerLink]="`lessons/${this.lesson().id}/lesson-edit`"
+        >
+          <img src="pencil-square.svg" width="20px" class="m-2" />
+        </button>
+        }
+        <button
+          class="btn btn-info text-white ms-2"
+          style="width: 100px"
+          [routerLink]="`lessons/${this.lesson().id}`"
+        >
+          Enter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

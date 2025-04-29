@@ -1,0 +1,11 @@
+<div class="vstack gap-3">
+    @if (isProgressLoaded()) {
+        @for (lesson of lessons(); track lesson.id) {
+            <app-lesson-card [lesson]="lesson"></app-lesson-card>
+        } @empty {
+            <div class="alert alert-dark" role="alert">
+                This course currently has no lessons available.
+            </div>
+        }
+    }
+</div>

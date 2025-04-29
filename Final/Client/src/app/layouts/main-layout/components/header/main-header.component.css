@@ -1,0 +1,21 @@
+.nav-item:hover {
+  cursor: pointer;
+}
+
+.navbar-brand {
+  transition-duration: 300ms;
+}
+
+.navbar-brand:hover {
+  cursor: pointer;
+  filter: brightness(80%);
+}
+
+.user-icon {
+  transition-duration: 300ms;
+}
+
+.user-icon:hover {
+  cursor: pointer;
+  filter: brightness(80%);
+}

@@ -1,0 +1,61 @@
+<div class="container bg-light shadow-sm p-3 rounded">
+  <form [formGroup]="loginForm" (ngSubmit)="isProcessing() ? '' : onSubmit()">
+    <div class="container mb-4 text-center">
+      <h1 class="fw-bold text-secondary-emphasis">Login</h1>
+    </div>
+    <hr class="mb-4" />
+    <label for="email" class="form-label">Email</label>
+    <input
+      id="email"
+      class="form-control"
+      type="email"
+      formControlName="email"
+      [ngClass]="formUtils.getValidationClass(email)"
+    />
+
+    <div class="text-danger mb-4 mt-2 p-1">
+      @if (email?.invalid && (email?.touched || email?.dirty)) {
+      <ul class="m-0 bg-danger-subtle rounded">
+        @if (email?.getError('required')) {
+        <li class="p-1">Email field is required.</li>
+        } @if (email?.getError('email')) {
+        <li class="p-1">Please enter a valid email address.</li>
+        }
+      </ul>
+      }
+    </div>
+
+    <label for="password" class="form-label">Password</label>
+    <input
+      id="password"
+      class="form-control"
+      type="password"
+      formControlName="password"
+      [ngClass]="formUtils.getValidationClass(password)"
+    />
+
+    <div class="text-danger mb-4 mt-2 p-1">
+      @if (password?.invalid && (password?.touched || password?.dirty)) {
+      <ul class="m-0 bg-danger-subtle rounded">
+        @if (password?.getError('required')) {
+        <li class="p-1">Password field is required.</li>
+        } @if (password?.getError('minlength')) {
+        <li class="p-1">Password can't be less than 8 characters.</li>
+        }
+      </ul>
+      }
+    </div>
+
+    <div class="container text-center my-3">
+      <button
+        [disabled]="isProcessing()"
+        class="btn btn-info shadow-sm text-white"
+      >
+        Log In
+      </button>
+    </div>
+    <div class="text-center">
+      Don't have an account ? <a routerLink="/auth/register">Register</a>
+    </div>
+  </form>
+</div>

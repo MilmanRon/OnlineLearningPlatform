@@ -1,0 +1,59 @@
+<div class="row row-cols-lg-3 row-cols-md-2 p-2">
+  <div class="container bg-light shadow-sm p-3 rounded">
+    <form
+      [formGroup]="editLessonForm"
+      (ngSubmit)="isProcessing() ? '' : onSubmit()"
+    >
+      <div class="container mb-4">
+        <p>Editing:</p>
+        <h1 class="fw-bold text-secondary-emphasis">{{lesson()?.title}}</h1>
+      </div>
+      <hr class="mb-4" />
+      <label for="title" class="form-label">Title</label>
+      <input
+        class="form-control"
+        id="title"
+        type="text"
+        formControlName="title"
+        [ngClass]="formUtils.getValidationClass(title)"
+      />
+
+      <div class="text-danger mb-4 mt-2 p-1">
+        @if (title?.invalid && (title?.touched || title?.dirty)) {
+        <ul class="m-0 bg-danger-subtle rounded">
+          @if (title?.getError('required')) {
+          <li class="p-1">Title is required.</li>
+          } @if (title?.getError('maxlength')) {
+          <li class="p-1">Title can't be more than 30 characters.</li>
+          }
+        </ul>
+        }
+      </div>
+
+      <label for="videoUrl" class="form-label">Video URL</label>
+      <input
+        class="form-control"
+        id="videoUrl"
+        type="text"
+        formControlName="videoUrl"
+        [ngClass]="formUtils.getValidationClass(videoUrl)"
+      />
+
+      <div class="text-danger mb-4 mt-2 p-1">
+        @if (videoUrl?.invalid && (videoUrl?.touched || videoUrl?.dirty)) {
+        <ul class="m-0 bg-danger-subtle rounded">
+          @if (videoUrl?.getError('required')) {
+          <li class="p-1">Video URL is required.</li>
+          }
+        </ul>
+        }
+      </div>
+
+      <div class="text-center">
+        <button class="btn btn-info text-white" [disabled]="isProcessing()">
+            Submit Edit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="modal" [ngClass]="modalService.isVisible() ? 'show-modal' : ''">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{modalService.modalTitle()}}</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <p>{{modalService.modalText()}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="decline()">Cancel</button>
+          <button type="button" class="btn btn-info text-white" (click)="accept()">Yes, continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
